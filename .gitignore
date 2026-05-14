@@ -1,0 +1,9 @@
+bin/
+screenshots/
+.draw-screenshots/
+result.json
+result_*.json
+.DS_Store
+*.test
+*.out
+coverage.out

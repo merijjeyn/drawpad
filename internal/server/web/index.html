@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>draw — AI ↔ Human</title>
+  <link rel="stylesheet"
+        href="https://unpkg.com/@excalidraw/excalidraw@0.17.6/dist/excalidraw.production.min.css" />
+  <style>
+    html, body, #root { height: 100%; margin: 0; padding: 0; overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
+    body { background: #f6f6f6; }
+    #layout { display: flex; flex-direction: column; height: 100vh; }
+    #prompt-bar {
+      flex: 0 0 auto;
+      padding: 10px 14px;
+      background: #1f2937;
+      color: #f9fafb;
+      font-size: 14px;
+      line-height: 1.4;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid #111827;
+    }
+    #prompt-bar .badge {
+      background: #4f46e5;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      flex: 0 0 auto;
+    }
+    #prompt-text { flex: 1 1 auto; }
+    #canvas-wrap { flex: 1 1 auto; min-height: 0; position: relative; }
+    #footer {
+      flex: 0 0 auto;
+      display: flex;
+      gap: 10px;
+      padding: 10px 14px;
+      background: #ffffff;
+      border-top: 1px solid #e5e7eb;
+      align-items: center;
+    }
+    #comment {
+      flex: 1 1 auto;
+      padding: 8px 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+      resize: none;
+      height: 38px;
+      max-height: 38px;
+    }
+    button {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+    #cancel-btn {
+      background: #ffffff;
+      color: #374151;
+      border-color: #d1d5db;
+    }
+    #cancel-btn:hover { background: #f3f4f6; }
+    #send-btn {
+      background: #4f46e5;
+      color: white;
+    }
+    #send-btn:hover { background: #4338ca; }
+    #send-btn[disabled], #cancel-btn[disabled] { opacity: 0.5; cursor: wait; }
+    #status {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      background: rgba(31, 41, 55, 0.9);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+      z-index: 100;
+    }
+    #status.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <div id="layout">
+    <div id="prompt-bar">
+      <span class="badge">AI asks</span>
+      <span id="prompt-text">Loading…</span>
+    </div>
+    <div id="canvas-wrap">
+      <div id="root"></div>
+      <div id="status"></div>
+    </div>
+    <div id="footer">
+      <textarea id="comment" placeholder="Optional comment back to the agent…"></textarea>
+      <button id="cancel-btn">Cancel</button>
+      <button id="send-btn">Send →</button>
+    </div>
+  </div>
+
+  <script crossorigin src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@excalidraw/excalidraw@0.17.6/dist/excalidraw.production.min.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
