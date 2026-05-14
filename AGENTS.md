@@ -41,12 +41,6 @@ draw \
   --screenshot-dir ./screenshots
 ```
 
-You usually do not need to author Excalidraw JSON by hand. The
-`internal/diagram` package exposes `Rectangle`, `Ellipse`, `Diamond`, `Text`,
-`Arrow`, `Line`, `BindText`, `BindArrow`. Write a tiny generator program (see
-`cmd/build-architecture/main.go` for a complete working example) and pipe its
-stdout into `draw --initial -`.
-
 ## What you get back
 
 The CLI exits with:
@@ -58,6 +52,45 @@ The CLI exits with:
 - **2** — user cancelled or closed the window. `cancelled:true`. Don't pretend
   they confirmed; fall back to asking in text.
 - **1** — config / I/O error; stderr explains.
+
+## Where to put one-shot generators
+
+One-shot scene generators (the throwaway `main.go` you write to produce
+an initial scene for a single `draw` call) **must live under `/tmp/`**,
+not inside the repo. That keeps `git status` clean and leaves nothing for
+a follow-up agent to garbage-collect. Recommended layout:
+
+```
+/tmp/draw-<slug>/main.go        ← the generator (self-contained)
+/tmp/draw-<slug>/go.mod         ← `go mod init scratch`
+/tmp/draw-<slug>/result.json    ← --output target
+/tmp/draw-<slug>/screenshots/   ← --screenshot-dir target
+```
+
+**Self-contained means no imports of this repo.** `internal/diagram` is
+unreachable from `/tmp/` (Go's `internal/` rule blocks importers outside
+the module tree, and a `replace` directive does not relax it). Emit the
+Excalidraw JSON directly — the schema is just a `{type, version,
+elements, appState}` envelope and each element is a plain map. Crib the
+field shapes from `internal/diagram/elements.go` and inline the few
+helpers you need (UUID-style IDs, `boundElements` / `containerId`
+wiring for labels, `startBinding` / `endBinding` for arrows).
+
+Build and run from there, e.g.:
+
+```bash
+mkdir -p /tmp/draw-<slug> && cd /tmp/draw-<slug>
+go mod init scratch
+go run . \
+  | draw --initial - \
+         --output    result.json \
+         --screenshot-dir screenshots
+```
+
+If a generator is genuinely worth keeping as a reference for future
+agents, ask the user before promoting it from `/tmp/` into
+`cmd/build-*/` — the surviving worked examples live there
+(`cmd/build-architecture/main.go`, `cmd/build-webapp-ui/main.go`).
 
 ## Dogfooding when developing this tool
 
@@ -74,5 +107,5 @@ exists precisely for this kind of exchange.
   features.
 - Run `go test -race ./...` before declaring work done.
 - Layered architecture (game-engine style, bottom-up): `diagram → session →
-  server → web → browser → app → cmd/draw`. New code goes into the lowest
+server → web → browser → app → cmd/draw`. New code goes into the lowest
   layer that makes sense; don't reach upward.

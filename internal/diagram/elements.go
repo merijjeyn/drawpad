@@ -3,8 +3,13 @@ package diagram
 import (
 	"crypto/rand"
 	"encoding/hex"
+	"strings"
 	"time"
 )
+
+// boundTextPadding matches Excalidraw's BOUND_TEXT_PADDING — the horizontal
+// inset applied when a text element is rendered inside a container.
+const boundTextPadding = 5.0
 
 // Defaults applied to every element constructed via the helpers below. They
 // match Excalidraw's own defaults so the output looks natural in the UI.
@@ -147,21 +152,40 @@ func Line(x1, y1, x2, y2 float64) map[string]interface{} {
 
 // BindText attaches a text element to a container shape so the text renders
 // centered inside it. Both elements should be added to the scene afterwards.
+//
+// We pre-compute the text's x/y/width/height to match what Excalidraw's
+// redrawTextBoundingBox would produce after the first user interaction —
+// otherwise multi-line labels render offset upward (and partly above the
+// container) until the user double-clicks to force a remeasure.
 func BindText(container, text map[string]interface{}) {
 	cid, _ := container["id"].(string)
 	tid, _ := text["id"].(string)
 	text["containerId"] = cid
 	text["textAlign"] = defaultTextAlign
 	text["verticalAlign"] = defaultVerticalAlign
-	// Center the text inside the container.
-	if cw, ok := numericField(container, "width"); ok {
-		text["x"], _ = numericField(container, "x")
-		text["width"] = cw
+
+	cx, _ := numericField(container, "x")
+	cy, _ := numericField(container, "y")
+	cw, _ := numericField(container, "width")
+	ch, _ := numericField(container, "height")
+
+	fontSize := defaultFontSize
+	if fs, ok := numericField(text, "fontSize"); ok && fs > 0 {
+		fontSize = fs
 	}
-	if ch, ok := numericField(container, "height"); ok {
-		text["y"], _ = numericField(container, "y")
-		text["height"] = ch
+	lineHeight := defaultLineHeight
+	if lh, ok := numericField(text, "lineHeight"); ok && lh > 0 {
+		lineHeight = lh
 	}
+	content, _ := text["text"].(string)
+	lines := 1 + strings.Count(content, "\n")
+	measuredH := float64(lines) * fontSize * lineHeight
+
+	text["x"] = cx + boundTextPadding
+	text["y"] = cy + (ch-measuredH)/2
+	text["width"] = cw - 2*boundTextPadding
+	text["height"] = measuredH
+
 	container["boundElements"] = append(
 		toInterfaceSlice(container["boundElements"]),
 		map[string]interface{}{"id": tid, "type": "text"},

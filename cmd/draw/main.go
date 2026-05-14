@@ -69,8 +69,8 @@ func run(args []string, stdin io.Reader, stdout, stderr io.Writer) error {
 		initialFlag       = fs.String("initial", "", "Path to an initial Excalidraw scene JSON file (- for stdin)")
 		outputFlag        = fs.String("output", "-", "Where to write the result JSON; - for stdout")
 		screenshotDirFlag = fs.String("screenshot-dir", "", "Directory for the diagram screenshot (default: ./.draw-screenshots)")
-		widthFlag         = fs.Int("width", 1100, "Window width in pixels")
-		heightFlag        = fs.Int("height", 760, "Window height in pixels")
+		widthFlag         = fs.Int("width", 1100, "Window width in pixels (capped at 1400)")
+		heightFlag        = fs.Int("height", 760, "Window height in pixels (capped at 900)")
 		timeoutFlag       = fs.Duration("timeout", 0, "Maximum time to wait for the user (0 = no limit)")
 		quietFlag         = fs.Bool("quiet", false, "Suppress informational log lines on stderr")
 	)
@@ -102,12 +102,26 @@ func run(args []string, stdin io.Reader, stdout, stderr io.Writer) error {
 		screenshotDir = abs
 	}
 
+	// Hard-cap the window so an over-eager agent can't spawn a Chrome
+	// window larger than fits on a typical laptop screen.
+	const (
+		maxWidth  = 1400
+		maxHeight = 900
+	)
+	w, h := *widthFlag, *heightFlag
+	if w > maxWidth {
+		w = maxWidth
+	}
+	if h > maxHeight {
+		h = maxHeight
+	}
+
 	a, err := app.New(app.Config{
 		Initial:       initial,
 		ScreenshotDir: screenshotDir,
 		BrowserOpts: browser.Options{
-			Width:       *widthFlag,
-			Height:      *heightFlag,
+			Width:       w,
+			Height:      h,
 			WindowTitle: "draw",
 		},
 		Logger: logger,
@@ -191,8 +205,8 @@ FLAGS
                       stdin. Omit for a blank canvas.
   -output PATH        Where to write the result JSON; "-" = stdout (default).
   -screenshot-dir DIR Folder for the PNG export (default ./.draw-screenshots).
-  -width N            Window width in pixels (default 1100).
-  -height N           Window height in pixels (default 760).
+  -width N            Window width in pixels (default 1100, max 1400).
+  -height N           Window height in pixels (default 760, max 900).
   -timeout DUR        Max time to wait for the user; Go duration syntax
                       (e.g. 5m, 1h). 0 = no limit. Default 0.
   -quiet              Silence informational log lines on stderr.
