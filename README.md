@@ -62,6 +62,17 @@ Prebuilt binaries (including Windows) are attached to every release on
 the [Releases page](https://github.com/merijjeyn/drawpad/releases).
 Extract the archive and put `drawpad` somewhere on your `PATH`.
 
+### Uninstall
+
+```bash
+curl -sSL https://raw.githubusercontent.com/merijjeyn/drawpad/main/scripts/uninstall.sh | bash
+```
+
+Removes the binary from every standard install dir (`~/.local/bin`,
+`/usr/local/bin`, `/opt/homebrew/bin`, `$(go env GOPATH)/bin`) and undoes
+the PATH edit the installer made in your shell rc — but only the exact
+line it added, never your own edits.
+
 ### Requirements (all install methods)
 
 - **Google Chrome** installed locally — `drawpad` launches it in `--app`
