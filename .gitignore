@@ -7,3 +7,4 @@ result_*.json
 *.test
 *.out
 coverage.out
+meric_notes.md

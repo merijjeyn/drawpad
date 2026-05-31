@@ -1,1 +1,0 @@
-- drawpad yapmak macte ekstra chrome windowu seklinde goszukuyo alttaki barda
