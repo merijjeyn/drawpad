@@ -9,12 +9,10 @@ A picture beats three rounds of clarifying questions.
 
 ## Demo
 
-https://github.com/merijjeyn/drawpad/raw/main/docs/demo.mp4
-
-<!--
-GitHub renders this URL as an inline video player once the repo is public.
-The file lives at docs/demo.mp4 in the repo.
--->
+<video src="https://github.com/merijjeyn/drawpad/raw/main/docs/demo.mp4" controls muted width="720">
+  Your browser doesn't support HTML video.
+  <a href="https://github.com/merijjeyn/drawpad/raw/main/docs/demo.mp4">Download the demo</a> instead.
+</video>
 
 ## Install
 
