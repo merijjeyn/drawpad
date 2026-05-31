@@ -16,19 +16,53 @@ A picture beats three rounds of clarifying questions.
 
 ## Install
 
-With a Go toolchain (1.23+):
+### Recommended: one-line curl install (macOS / Linux)
+
+```bash
+curl -sSL https://raw.githubusercontent.com/merijjeyn/drawpad/main/scripts/install.sh | bash
+```
+
+The script auto-detects your OS / arch, downloads the matching prebuilt
+binary from the [latest release](https://github.com/merijjeyn/drawpad/releases/latest),
+verifies its SHA-256 checksum, drops it in `~/.local/bin`, and adds that
+directory to your `$PATH` (in `~/.zshrc` / `~/.bashrc` / fish config) if
+it isn't already. No Go toolchain required.
+
+Knobs (all optional):
+
+```bash
+# Pin a version instead of "latest"
+DRAWPAD_VERSION=v0.1.0 curl -sSL .../install.sh | bash
+
+# Install somewhere else
+DRAWPAD_INSTALL_DIR=/usr/local/bin curl -sSL .../install.sh | bash
+
+# Don't touch shell rc files (just print the line you should add)
+DRAWPAD_NO_MODIFY_PATH=1 curl -sSL .../install.sh | bash
+```
+
+### Alternative: `go install` (if you already have Go 1.23+)
 
 ```bash
 go install github.com/merijjeyn/drawpad/cmd/drawpad@latest
 ```
 
 This drops a `drawpad` binary into `$(go env GOBIN)` (or `$(go env
-GOPATH)/bin`). Make sure that directory is on your `PATH`.
+GOPATH)/bin`). You must make sure that directory is on your `PATH`
+yourself — `go install` does **not** modify your shell rc. The standard
+one-liner:
 
-Prebuilt binaries for macOS / Linux / Windows are attached to every
-release on the [Releases page](https://github.com/merijjeyn/drawpad/releases).
+```bash
+echo 'export PATH="$PATH:$(go env GOPATH)/bin"' >> ~/.zshrc && source ~/.zshrc
+```
 
-### Requirements
+### Manual download
+
+Prebuilt binaries (including Windows) are attached to every release on
+the [Releases page](https://github.com/merijjeyn/drawpad/releases).
+Extract the archive and put `drawpad` somewhere on your `PATH`.
+
+### Requirements (all install methods)
 
 - **Google Chrome** installed locally — `drawpad` launches it in `--app`
   mode to host the canvas.
