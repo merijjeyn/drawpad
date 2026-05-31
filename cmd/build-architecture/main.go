@@ -1,12 +1,12 @@
-// build-architecture writes an Excalidraw scene describing draw_interface's
-// own architecture to stdout. Pipe it to `draw --initial -` to open it.
+// build-architecture writes an Excalidraw scene describing drawpad's
+// own architecture to stdout. Pipe it to `drawpad --initial -` to open it.
 package main
 
 import (
 	"encoding/json"
 	"os"
 
-	"github.com/mericungor/draw_interface/internal/diagram"
+	"github.com/merijjeyn/drawpad/internal/diagram"
 )
 
 func main() {
@@ -20,7 +20,7 @@ func main() {
 		detail string
 	}
 	layers := []layer{
-		{"L6  cmd/draw  (CLI entry)", "#fde68a", "flag parsing • result writer"},
+		{"L6  cmd/drawpad  (CLI entry)", "#fde68a", "flag parsing • result writer"},
 		{"L5  internal/app  (orchestrator)", "#fcd34d", "wires session + server + browser • blocks on Run()"},
 		{"L4  internal/browser  (Chrome --app launcher)", "#fbbf24", "exec chrome • ctx-driven kill"},
 		{"L3  web/  (Excalidraw frontend)", "#a7f3d0", "React 17 + Excalidraw 0.17 UMD • exportToBlob"},
@@ -60,7 +60,7 @@ func main() {
 	agent := diagram.Rectangle(startX+boxW+detailW+80, startY, 200, 80)
 	agent["backgroundColor"] = "#f9a8d4"
 	agent["fillStyle"] = "solid"
-	agentText := diagram.Text(0, 0, "AI agent\n(runs `draw`)")
+	agentText := diagram.Text(0, 0, "AI agent\n(runs `drawpad`)")
 	agentText["fontSize"] = 16.0
 	diagram.BindText(agent, agentText)
 	s.Elements = append(s.Elements, agent, agentText)
@@ -102,7 +102,7 @@ func main() {
 	s.Elements = append(s.Elements, a1, label1, a2, label2, a3, label3)
 
 	// Title at the top.
-	title := diagram.Text(startX, 10, "draw_interface — architecture (built one-shot)")
+	title := diagram.Text(startX, 10, "drawpad — architecture (built one-shot)")
 	title["fontSize"] = 22.0
 	title["strokeColor"] = "#111827"
 	s.Elements = append(s.Elements, title)

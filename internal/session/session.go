@@ -13,7 +13,7 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/mericungor/draw_interface/internal/diagram"
+	"github.com/merijjeyn/drawpad/internal/diagram"
 )
 
 // ErrAlreadyCompleted is reported when Complete is called more than once on

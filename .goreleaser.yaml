@@ -1,0 +1,75 @@
+version: 2
+
+project_name: drawpad
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: drawpad
+    main: ./cmd/drawpad
+    binary: drawpad
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      - goos: windows
+        goarch: arm64
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.commit={{.Commit}}
+      - -X main.date={{.Date}}
+
+archives:
+  - id: drawpad
+    name_template: >-
+      {{ .ProjectName }}_{{ .Version }}_
+      {{- if eq .Os "darwin" }}macOS{{- else }}{{ .Os }}{{ end }}_
+      {{- if eq .Arch "amd64" }}x86_64{{- else }}{{ .Arch }}{{ end }}
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - README.md
+      - LICENSE
+      - AGENTS.md
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  version_template: '{{ incpatch .Version }}-next'
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^chore:'
+      - 'Merge pull request'
+
+release:
+  github:
+    owner: merijjeyn
+    name: drawpad
+  draft: false
+  prerelease: auto
+  header: |
+    ## drawpad {{ .Version }}
+
+    Install with Go:
+
+    ```bash
+    go install github.com/merijjeyn/drawpad/cmd/drawpad@{{ .Tag }}
+    ```
+
+    Or grab a prebuilt binary below.

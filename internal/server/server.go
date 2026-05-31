@@ -26,8 +26,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/mericungor/draw_interface/internal/diagram"
-	"github.com/mericungor/draw_interface/internal/session"
+	"github.com/merijjeyn/drawpad/internal/diagram"
+	"github.com/merijjeyn/drawpad/internal/session"
 )
 
 //go:embed web

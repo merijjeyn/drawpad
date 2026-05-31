@@ -15,8 +15,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/mericungor/draw_interface/internal/browser"
-	"github.com/mericungor/draw_interface/internal/diagram"
+	"github.com/merijjeyn/drawpad/internal/browser"
+	"github.com/merijjeyn/drawpad/internal/diagram"
 )
 
 // 1x1 transparent PNG, base64-encoded — small enough to inline in tests.

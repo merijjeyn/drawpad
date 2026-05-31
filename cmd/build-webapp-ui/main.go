@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"os"
 
-	"github.com/mericungor/draw_interface/internal/diagram"
+	"github.com/merijjeyn/drawpad/internal/diagram"
 )
 
 func main() {

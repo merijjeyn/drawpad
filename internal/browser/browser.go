@@ -34,7 +34,7 @@ type Options struct {
 
 // Defaults returns a sensible default Options ready for fill-in.
 func Defaults() Options {
-	return Options{Width: 1100, Height: 760, WindowTitle: "draw"}
+	return Options{Width: 1100, Height: 760, WindowTitle: "drawpad"}
 }
 
 // Open is the default LaunchFunc. It locates Chrome and starts it with the
@@ -52,7 +52,7 @@ func Open(ctx context.Context, url string, opts Options) (*exec.Cmd, error) {
 	userDataDir := opts.UserDataDir
 	if userDataDir == "" {
 		var err error
-		userDataDir, err = os.MkdirTemp("", "draw_interface-chrome-*")
+		userDataDir, err = os.MkdirTemp("", "drawpad-chrome-*")
 		if err != nil {
 			return nil, fmt.Errorf("browser: create user data dir: %w", err)
 		}

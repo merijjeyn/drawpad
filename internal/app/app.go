@@ -16,10 +16,10 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/mericungor/draw_interface/internal/browser"
-	"github.com/mericungor/draw_interface/internal/diagram"
-	"github.com/mericungor/draw_interface/internal/server"
-	"github.com/mericungor/draw_interface/internal/session"
+	"github.com/merijjeyn/drawpad/internal/browser"
+	"github.com/merijjeyn/drawpad/internal/diagram"
+	"github.com/merijjeyn/drawpad/internal/server"
+	"github.com/merijjeyn/drawpad/internal/session"
 )
 
 // Config bundles the inputs to one drawing interaction.

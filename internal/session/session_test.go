@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/mericungor/draw_interface/internal/diagram"
+	"github.com/merijjeyn/drawpad/internal/diagram"
 )
 
 func TestSession_CompleteAndWait(t *testing.T) {

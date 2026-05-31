@@ -1,3 +1,3 @@
-module github.com/mericungor/draw_interface
+module github.com/merijjeyn/drawpad
 
-go 1.26.1
+go 1.23

@@ -31,7 +31,7 @@ func NewScene() *Scene {
 	return &Scene{
 		Type:     "excalidraw",
 		Version:  2,
-		Source:   "draw_interface",
+		Source:   "drawpad",
 		Elements: []map[string]interface{}{},
 		AppState: map[string]interface{}{
 			"viewBackgroundColor": "#ffffff",
