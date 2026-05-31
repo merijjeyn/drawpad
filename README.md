@@ -9,10 +9,16 @@ A picture beats three rounds of clarifying questions.
 
 ## Demo
 
-<video src="https://github.com/merijjeyn/drawpad/raw/main/docs/demo.mp4" controls muted width="720">
-  Your browser doesn't support HTML video.
-  <a href="https://github.com/merijjeyn/drawpad/raw/main/docs/demo.mp4">Download the demo</a> instead.
-</video>
+<!--
+TODO: replace the link below with an inline <video> tag once the demo
+is re-uploaded via the GitHub web UI (drag-drop into an issue/release-notes
+form). That produces a `https://github.com/user-attachments/assets/<uuid>`
+URL — the only URL pattern GitHub serves with a video/* MIME, which is
+what browsers require to play inline. URLs under /raw/ or /releases/
+download as octet-stream and refuse to play.
+-->
+
+▶ **[Watch the demo (35 s)](https://github.com/merijjeyn/drawpad/raw/main/docs/demo.mp4)**
 
 ## Install
 
@@ -65,13 +71,13 @@ Extract the archive and put `drawpad` somewhere on your `PATH`.
 ### Uninstall
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/merijjeyn/drawpad/main/scripts/uninstall.sh | bash
+drawpad uninstall
 ```
 
-Removes the binary from every standard install dir (`~/.local/bin`,
-`/usr/local/bin`, `/opt/homebrew/bin`, `$(go env GOPATH)/bin`) and undoes
-the PATH edit the installer made in your shell rc — but only the exact
-line it added, never your own edits.
+Built-in subcommand. Removes the binary and reverses the PATH edit the
+install script wrote in your shell rc — but only the exact line under
+the `# Added by drawpad installer on …` marker, so your own edits are
+safe. Add `--keep-path-edits` to leave shell rc files alone.
 
 ### Requirements (all install methods)
 

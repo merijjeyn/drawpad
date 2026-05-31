@@ -49,6 +49,18 @@ var (
 )
 
 func main() {
+	// `drawpad uninstall …` is a built-in subcommand that removes the
+	// binary + reverses the install script's PATH edits. Routed here
+	// before the regular flag parser so the subcommand's own flags
+	// (--keep-path-edits etc.) don't collide with the canvas flags.
+	if len(os.Args) >= 2 && os.Args[1] == "uninstall" {
+		if err := runUninstall(os.Args[2:], os.Stdout, os.Stderr); err != nil {
+			fmt.Fprintf(os.Stderr, "drawpad: %v\n", err)
+			os.Exit(1)
+		}
+		return
+	}
+
 	if err := run(os.Args[1:], os.Stdin, os.Stdout, os.Stderr); err != nil {
 		// -h / --help: Go's flag pkg returns ErrHelp after printing Usage.
 		// That's a successful invocation, not a failure.
@@ -211,6 +223,7 @@ WHEN TO REACH FOR IT (AI AGENTS)
 
 USAGE
   drawpad [flags]
+  drawpad uninstall [--keep-path-edits]    # remove drawpad from your system
 
 FLAGS
   -prompt STR         Question shown above the canvas (e.g. "Does this
